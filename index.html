@@ -354,18 +354,18 @@ df %&gt;%
   filter(str_detect(s, paste(keep, collapse=&quot;|&quot;))) %&gt;%
   mutate(
     x = str_extract(s, &quot;\\w[0-9]*&quot;),
-    serial_clean = ifelse(is.na(x), s, x)
+    s_clean = ifelse(is.na(x), s, x)
    ) %&gt;%
   filter(!(s %in% (df %&gt;% filter(p == &quot;sub&quot;) %&gt;% distinct(s)))) %&gt;%
-  group_by(serial_clean) %&gt;%
-  mutate(keep_serial = row_number() == 1) %&gt;%
+  group_by(s_clean) %&gt;%
+  mutate(keep_s = row_number() == 1) %&gt;%
   group_by(s) %&gt;%
-  filter(max(keep_serial) == TRUE) %&gt;%
-  select(s, serial_clean, p, v) %&gt;%
+  filter(max(keep_s) == TRUE) %&gt;%
+  select(s, s_clean, p, v) %&gt;%
   pivot_wider(names_from=p, values_from=v) %&gt;%
   DT::datatable()</code></pre>
-<div id="htmlwidget-124e63ef22e714fe8aba" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-124e63ef22e714fe8aba">{"x":{"filter":"none","data":[["1","2"],["s1.1","s2"],["s1","s2"],["TRUE","TRUE"],["FALSE","FALSE"],[null,"TRUE"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>s<\/th>\n      <th>serial_clean<\/th>\n      <th>h<\/th>\n      <th>w<\/th>\n      <th>a<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"order":[],"autoWidth":false,"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-fb96a4c323c0b6946f57" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fb96a4c323c0b6946f57">{"x":{"filter":"none","data":[["1","2"],["s1.1","s2"],["s1","s2"],["TRUE","TRUE"],["FALSE","FALSE"],[null,"TRUE"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>s<\/th>\n      <th>s_clean<\/th>\n      <th>h<\/th>\n      <th>w<\/th>\n      <th>a<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"order":[],"autoWidth":false,"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 

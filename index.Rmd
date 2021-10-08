@@ -97,14 +97,14 @@ df %>%
   filter(str_detect(s, paste(keep, collapse="|"))) %>%
   mutate(
     x = str_extract(s, "\\w[0-9]*"),
-    serial_clean = ifelse(is.na(x), s, x)
+    s_clean = ifelse(is.na(x), s, x)
    ) %>%
   filter(!(s %in% (df %>% filter(p == "sub") %>% distinct(s)))) %>%
-  group_by(serial_clean) %>%
-  mutate(keep_serial = row_number() == 1) %>%
+  group_by(s_clean) %>%
+  mutate(keep_s = row_number() == 1) %>%
   group_by(s) %>%
-  filter(max(keep_serial) == TRUE) %>%
-  select(s, serial_clean, p, v) %>%
+  filter(max(keep_s) == TRUE) %>%
+  select(s, s_clean, p, v) %>%
   pivot_wider(names_from=p, values_from=v) %>%
   DT::datatable()
 ```
