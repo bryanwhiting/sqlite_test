@@ -1,0 +1,111 @@
+---
+title: "Querying using SQL and R"
+date: "`r Sys.Date()`"
+author: Bryan Whiting
+output:
+  rmdformats::downcute:
+    self_contained: true
+    thumbnails: true
+    lightbox: true
+    gallery: false
+    highlight: tango
+    code_folding: show
+    df_print: paged
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  message=F,
+  comment = "#  "
+)
+```
+
+# Create a Database from CSV
+
+Create a database (loaded from CSV):
+
+```{r}
+library(DBI)
+con <- dbConnect(RSQLite::SQLite(), db=here::here('data-raw/data.db'))
+df <- readr::read_csv(here::here("data-raw/data.csv"))
+dbWriteTable(con, 'test', df, overwrite=T)
+dbDisconnect(con)
+```
+
+# Read from Database
+
+```{r}
+con <- dbConnect(RSQLite::SQLite(), db=here::here('data-raw/data.db'))
+res <- dbSendQuery(con, "SELECT * FROM test")
+dbFetch(res)
+```
+
+
+# Dataset
+
+```{sql, connection = con}
+select *
+from test 
+```
+
+# SQL approach
+
+```{sql, connection = con}
+with t1 as (
+  select *,
+  case when p = "sub" or INSTR(s, ".") = 0 then s
+      else substr(s, 1, INSTR(s, ".") - 1)
+      end as s_clean,
+    RANK() OVER(partition by 
+      case when p = "sub" or INSTR(s, ".") = 0 then s
+      else substr(s, 1, INSTR(s, ".") - 1)
+      end
+      order by t) as r
+  from test
+  where (s LIKE "s1%" OR s LIKE "s2%")
+  AND s not in (
+    select distinct s
+    from test 
+    where p = "sub"
+  )
+)
+select s, s_clean,
+  max(case when p = 'h' then v end) as h,
+  max(case when p = 'w' then v end) as w,
+  max(case when p = 'a' then v end) as a
+from t1
+where s in (select distinct(s) from t1 where r = 1)
+group by 1, 2
+```
+
+# R
+
+```{r}
+library(readr)
+library(dplyr)
+library(tidyr)
+library(stringr)
+res <- dbSendQuery(con, "SELECT * FROM test")
+df <- dbFetch(res) 
+
+keep = c('s1', "s2")
+
+df %>%
+  filter(str_detect(s, paste(keep, collapse="|"))) %>%
+  mutate(
+    x = str_extract(s, "\\w[0-9]*"),
+    serial_clean = ifelse(is.na(x), s, x)
+   ) %>%
+  filter(!(s %in% (df %>% filter(p == "sub") %>% distinct(s)))) %>%
+  group_by(serial_clean) %>%
+  mutate(keep_serial = row_number() == 1) %>%
+  group_by(s) %>%
+  filter(max(keep_serial) == TRUE) %>%
+  select(s, serial_clean, p, v) %>%
+  pivot_wider(names_from=p, values_from=v) %>%
+  DT::datatable()
+```
+
