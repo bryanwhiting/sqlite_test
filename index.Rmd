@@ -44,7 +44,7 @@ dbFetch(res)
 ```
 
 
-# Dataset
+# Sample Data (SQL)
 
 ```{sql, connection = con}
 select *

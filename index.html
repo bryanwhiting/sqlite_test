@@ -137,7 +137,7 @@
             <ul>
             <li><a href="#create-a-database-from-csv">Create a Database from CSV</a></li>
             <li><a href="#read-from-database">Read from Database</a></li>
-            <li><a href="#dataset">Dataset</a></li>
+            <li><a href="#sample-data-sql">Sample Data (SQL)</a></li>
             <li><a href="#sql-approach">SQL approach</a></li>
             <li><a href="#r">R</a></li>
             </ul>
@@ -190,8 +190,8 @@ dbFetch(res)</code></pre>
   </script>
 </div>
 </div>
-<div id="dataset" class="section level1">
-<h1>Dataset</h1>
+<div id="sample-data-sql" class="section level1">
+<h1>Sample Data (SQL)</h1>
 <pre class="sql"><code>select *
 from test </code></pre>
 <div class="knitsql-table">
@@ -364,8 +364,8 @@ df %&gt;%
   select(s, serial_clean, p, v) %&gt;%
   pivot_wider(names_from=p, values_from=v) %&gt;%
   DT::datatable()</code></pre>
-<div id="htmlwidget-5894dc43b6915be51ff6" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5894dc43b6915be51ff6">{"x":{"filter":"none","data":[["1","2"],["s1.1","s2"],["s1","s2"],["TRUE","TRUE"],["FALSE","FALSE"],[null,"TRUE"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>s<\/th>\n      <th>serial_clean<\/th>\n      <th>h<\/th>\n      <th>w<\/th>\n      <th>a<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"order":[],"autoWidth":false,"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-124e63ef22e714fe8aba" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-124e63ef22e714fe8aba">{"x":{"filter":"none","data":[["1","2"],["s1.1","s2"],["s1","s2"],["TRUE","TRUE"],["FALSE","FALSE"],[null,"TRUE"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>s<\/th>\n      <th>serial_clean<\/th>\n      <th>h<\/th>\n      <th>w<\/th>\n      <th>a<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"order":[],"autoWidth":false,"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 
