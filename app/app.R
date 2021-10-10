@@ -15,7 +15,7 @@ library(reactable)
 library(ggplot2)
 library(plotly)
 
-df <- readr::read_csv(here::here('data-raw/data.csv')) %>%
+df <- readr::read_csv('data.csv') %>%
     mutate(
         x = str_extract(s, "\\w[0-9]*"),
         s_clean = ifelse(is.na(x), s, x)
