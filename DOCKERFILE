@@ -1,0 +1,4 @@
+FROM rocker/shiny:latest
+
+
+COPY app/ app/
