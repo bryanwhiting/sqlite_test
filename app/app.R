@@ -74,7 +74,7 @@ data_tab <- argonTabItem(
         hover_shadow = TRUE,
         title = "Learn more about your serial number",
         column(12, tags$h3("Please select your desired serial number below:")),
-        column(12, tags$p("By default, this app shows the raw data. If you click the Tranform button or select serial numbers, it will present the data to you in a cleaner, user-friendly format.")),
+        column(12, tags$p("By default, this app shows the raw data. If you click the 'Tranform' button, it will do the required filtering and pivoting. If you supply 'Serial Numbers', it will limit the to your chosen values.")),
         argonCard(
             # argonRow(
                 # width=12,
