@@ -12,8 +12,8 @@ df <- readr::read_csv('data.csv') %>%
 
 #* Prints dataframe of serial numbers
 #* @param serials 
-#* @post /inspect
-process_data <- function(serials = ""){
+#* @get /inspect
+function(serials = ""){
   if (length(serials) > 0){
     if(!(is.character(serials))){stop("Did not pass in string of form 's1|s2'")}
     df <- df %>% 
