@@ -30,10 +30,21 @@ docker run --rm -p 3838:3838 \
     -v /srv/shinylog/:/var/log/shiny-server/ \
     rocker/shiny
 
-docker run --rm -p 80:3838 \
+docker run -p 80:3838 \
     -v /home/ec2-user/sqlite_test/app/:/srv/shiny-server/ \
     -v /srv/shinylog/:/var/log/shiny-server/ \
+    --name argon \
     bryanwhiting/argonapp
+
+# for some reason "plotly" wasn't installed (despite docker)
+# and I forgot to add "install.packages('reactablefmtr')"
+docker exect -it argon bash
+R
+install.packages('plotly')
+install.packages('reactablefmtr')
+q()
+
+docker restart
 
 ```
 
@@ -62,6 +73,28 @@ sudo R -e "install.packages('plumber', dependencies=TRUE, repos='http://cran.rst
 
 ```
 docker run --rm \
+  -v /home/ec2-user/sqlite_test/api:/root/api \
+  -e DISABLE_AUTH=true \
+  -e PASSWORD=mu \
+  -e ROOT=true \
+  -u root \
   -p 8080:8000 \
+  --name plumber \
   bryanwhiting/plumber
+  
+docker exect -it <image> bash
+> sudo R
+> install.packages('plumber')
+> plumb(file='plumber.R')$run(host="0.0.0.0", port=8000)
 ```
+
+# Route to my personal website
+
+on Godaddy DNS:
+
+* Record A:, host: `apps`, target: ipv4 of the EC2
+
+On AWS:
+
+* go to [route53](https://console.aws.amazon.com/route53/v2/hostedzones#ListRecordSets/Z0765985164JUPFPQBFB4)
+* follow [these instructions](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-to-ec2-instance.html)
