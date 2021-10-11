@@ -23,13 +23,10 @@ sudo docker pull bryanwhiting/argonapp
 git clone https://github.com/bryanwhiting/sqlite_test
 cd sqlite_test
 
+# Test the default app
 docker run --rm -p 80:3838 rocker/shiny
 
-docker run --rm -p 3838:3838 \
-    -v /srv/shinyapps/:/srv/shiny-server/ \
-    -v /srv/shinylog/:/var/log/shiny-server/ \
-    rocker/shiny
-
+# Run my custom app via mounting
 docker run -p 80:3838 \
     -v /home/ec2-user/sqlite_test/app/:/srv/shiny-server/ \
     -v /srv/shinylog/:/var/log/shiny-server/ \
@@ -39,13 +36,13 @@ docker run -p 80:3838 \
 # for some reason "plotly" wasn't installed (despite docker)
 # and I forgot to add "install.packages('reactablefmtr')"
 docker exect -it argon bash
+# load R and download additional packages
 R
 install.packages('plotly')
 install.packages('reactablefmtr')
 q()
 
 docker restart
-
 ```
 
 `ec2-3-133-97-177.us-east-2.compute.amazonaws.com`
@@ -81,11 +78,14 @@ docker run --rm \
   -p 8080:8000 \
   --name plumber \
   bryanwhiting/plumber
-  
+
+# also, for some reason plumber wasn't installed in the docker.
+# maybe it's a user-level issue (root vs. rstudio usernames)
+
 docker exect -it <image> bash
 > sudo R
 > install.packages('plumber')
-> plumb(file='plumber.R')$run(host="0.0.0.0", port=8000)
+> plumber::plumb(file='plumber.R')$run(host="0.0.0.0", port=8000)
 ```
 
 # Route to my personal website
