@@ -64,7 +64,7 @@ sb <- argonDashSidebar(
 
 data_tab <- argonTabItem(
     tabName = "data",
-    argonH1("Data", display = 4),
+    argonH1("Welcome! Here's a demo dashboard to help you find the results of your diagnostics for given serial numbers. Please follow the instructions below:", display = 4),
     argonCard(
         width=12,
         icon = icon("cogs"),
@@ -72,9 +72,9 @@ data_tab <- argonTabItem(
         shadow = TRUE,
         border_level = 2,
         hover_shadow = TRUE,
-        title = "Learn more about your serial number",
-        column(12, tags$h3("Please select your desired serial number below:")),
-        column(12, tags$p("By default, this app shows the raw data. If you click the Tranform button or select serial numbers, it will present the data to you in a cleaner, user-friendly format.")),
+        title = "Discover Your Diagnostics",
+        column(12, tags$h3("Explore the Data")),
+        column(12, tags$p("By default, this app shows all of the raw data for the incoming diagnostics. If you click the 'Tranform' button the data will be filtered to the earliest timestamp for each serial. If you supply 'Serial Numbers' you will only see those serial values.")),
         argonCard(
             # argonRow(
                 # width=12,
